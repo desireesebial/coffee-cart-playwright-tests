@@ -1,4 +1,4 @@
-import { test } from '../fixtures/testFixtures';
+import { test, expect } from '../fixtures/testFixtures';
 import { COFFEES, TEST_USERS, PROMO } from '../data/coffeeData';
 
 test.describe('Checkout Flow', () => {
@@ -23,7 +23,6 @@ test.describe('Checkout Flow', () => {
   test('should handle the 3rd item promo popup and include discounted Mocha in checkout', async ({
     menuPage,
     checkoutModal,
-    cartPage,
   }) => {
     const selectedDrinks = [COFFEES.espresso, COFFEES.americano, COFFEES.cafeLatte];
     const subtotal = selectedDrinks.reduce((sum, item) => sum + item.price, 0);
@@ -33,13 +32,13 @@ test.describe('Checkout Flow', () => {
     }
 
     await menuPage.expectCartCount(3);
-    await menuPage.handlePromoIfPresent(true);
+    await menuPage.handlePromoBanner(true);
 
     await menuPage.expectCartCount(4);
     await menuPage.expectTotal(subtotal + PROMO.mochaDiscountPrice);
 
-    await menuPage.goToCartPage();
-    await cartPage.expectItemVisible(PROMO.cartItemName);
+    await menuPage.hoverPayButton();
+    await expect(menuPage.cartPreview).toContainText(PROMO.cartItemName);
 
     await menuPage.clickCheckout();
     await checkoutModal.submitPayment(TEST_USERS.promoOptInUser);
@@ -57,7 +56,7 @@ test.describe('Checkout Flow', () => {
       await menuPage.addDrink(drink.testId);
     }
 
-    await menuPage.handlePromoIfPresent(false);
+    await menuPage.handlePromoBanner(false);
     await menuPage.expectCartCount(3);
     await menuPage.expectTotal(expectedTotal);
 
