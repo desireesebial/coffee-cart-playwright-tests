@@ -19,7 +19,7 @@ export class MenuPage {
     this.cartLink = page.getByRole('link', { name: 'Cart page' });
     this.promoBanner = page.locator('div.promo');
     this.promoYesBtn = this.promoBanner.locator('button.yes');
-    this.promoNoBtn = this.promoBanner.locator('button.no');
+    this.promoNoBtn = this.promoBanner.locator('button').nth(1);
     this.contextModal = page.locator('dialog[data-cy="add-to-cart-modal"]');
     this.modalYesBtn = this.contextModal.getByRole('button', { name: 'Yes' });
     this.modalNoBtn = this.contextModal.getByRole('button', { name: 'No' });
@@ -34,15 +34,20 @@ export class MenuPage {
     await this.page.getByTestId(testId).click();
   }
 
+  async handlePromoBanner(acceptPromo: boolean = true) {
+    await expect(this.promoBanner).toBeVisible();
+    await expect(this.promoBanner).toContainText(PROMO.message);
+    if (acceptPromo) {
+      await this.promoYesBtn.click();
+    } else {
+      await this.promoNoBtn.click();
+    }
+    await expect(this.promoBanner).toBeHidden();
+  }
+
   async handlePromoIfPresent(acceptPromo: boolean = true) {
     if (await this.promoBanner.isVisible()) {
-      await expect(this.promoBanner).toContainText(PROMO.message);
-      if (acceptPromo) {
-        await this.promoYesBtn.click();
-      } else {
-        await this.promoNoBtn.click();
-      }
-      await expect(this.promoBanner).toBeHidden();
+      await this.handlePromoBanner(acceptPromo);
     }
   }
 
@@ -72,7 +77,7 @@ export class MenuPage {
 
   async updateQtyFromPreview(drinkName: string, action: '+' | '-') {
     const itemRow = this.cartPreview.locator('li.list-item').filter({ hasText: drinkName });
-    await itemRow.getByRole('button', { name: action }).click();
+    await itemRow.locator('button', { hasText: action }).click();
   }
 
   async expectCartCount(count: number) {
