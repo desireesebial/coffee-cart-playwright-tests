@@ -28,9 +28,8 @@ test.describe('Special Menu Interactions & Edge Cases', () => {
 
     // 3rd item triggers promo
     await menuPage.addDrink(COFFEES.mocha.testId);
-    await expect(menuPage.promoBanner).toBeVisible();
-    await expect(menuPage.promoBanner).toContainText(PROMO.message);
-    await menuPage.handlePromoIfPresent(false);
+    await menuPage.handlePromoBanner(false);
+    await menuPage.expectCartCount(3);
 
     // 4th and 5th items do not trigger promo
     await menuPage.addDrink(COFFEES.flatWhite.testId);
@@ -39,8 +38,7 @@ test.describe('Special Menu Interactions & Edge Cases', () => {
 
     // 6th item triggers promo again
     await menuPage.addDrink(COFFEES.cappuccino.testId);
-    await expect(menuPage.promoBanner).toBeVisible();
-    await menuPage.handlePromoIfPresent(true);
+    await menuPage.handlePromoBanner(true);
     await menuPage.expectCartCount(7);
   });
 
