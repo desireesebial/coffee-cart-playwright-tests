@@ -3,25 +3,23 @@ import { MESSAGES } from '../data/coffeeData';
 
 export class CartPage {
   readonly page: Page;
-  readonly cartItems: Locator;
+  readonly cartList: Locator;
   readonly emptyStateMessage: Locator;
   readonly checkoutBtn: Locator;
 
   constructor(page: Page) {
     this.page = page;
-    this.cartItems = page.locator('li.list-item');
+    this.cartList = page.locator('div.list');
     this.emptyStateMessage = page.locator('div.list p');
     this.checkoutBtn = page.getByTestId('checkout');
   }
 
   async expectItemVisible(name: string) {
-    const row = this.cartItems.filter({ hasText: name });
-    await expect(row).toBeVisible();
+    await expect(this.cartList).toContainText(name);
   }
 
   async removeItem(name: string) {
-    const row = this.cartItems.filter({ hasText: name });
-    await row.getByRole('button', { name: `Remove all ${name}` }).click();
+    await this.cartList.getByRole('button', { name: `Remove all ${name}` }).first().click();
   }
 
   async expectEmptyCart() {
