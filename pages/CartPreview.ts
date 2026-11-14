@@ -1,5 +1,4 @@
 import { Page, Locator, expect } from '@playwright/test';
-import { escapeRegExp } from './utils';
 
 export class CartPreview {
   readonly page: Page;
@@ -22,9 +21,7 @@ export class CartPreview {
   }
 
   async updateItemQuantity(drinkName: string, action: '+' | '-') {
-    const itemRow = this.previewContainer
-      .locator('li.list-item')
-      .filter({ hasText: new RegExp(`^${escapeRegExp(drinkName)}(\\s|$)`) });
-    await itemRow.getByRole('button', { name: action, exact: true }).click();
+    const buttonName = action === '+' ? `Add one ${drinkName}` : `Remove one ${drinkName}`;
+    await this.previewContainer.getByRole('button', { name: buttonName, exact: true }).click();
   }
 }
