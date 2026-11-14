@@ -72,6 +72,8 @@ export const PROMO = {
   mochaDiscountPrice: 4,
   message: "It's your lucky day! Get an extra cup of Mocha for $4.",
   cartItemName: '(Discounted) Mocha',
+  acceptButtonText: 'Yes, of course!',
+  declineButtonText: "Nah, I'll skip.",
 };
 
 export const TEST_USERS: Record<string, CheckoutUser> = {

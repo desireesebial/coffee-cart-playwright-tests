@@ -11,7 +11,8 @@ export default defineConfig({
   workers: process.env.CI ? 2 : undefined,
   reporter: [
     ['list'],
-    ['html', { open: 'never' }]
+    ['html', { open: 'never' }],
+    ['junit', { outputFile: 'test-results/junit-results.xml' }]
   ],
   use: {
     baseURL: process.env.BASE_URL || 'https://coffee-cart.app',

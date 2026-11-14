@@ -1,17 +1,22 @@
 {
   "name": "coffee-cart-tests",
-  "version": "1.0.0",
-  "description": "Playwright E2E test suite for coffee-cart.app",
+  "version": "1.4.0",
+  "description": "Playwright tests for coffee-cart.app",
   "scripts": {
     "test": "npx playwright test",
     "test:headed": "npx playwright test --headed",
     "test:ui": "npx playwright test --ui",
+    "lint": "npx eslint \"tests/**/*.ts\" \"pages/**/*.ts\" \"fixtures/**/*.ts\" \"data/**/*.ts\"",
     "report": "npx playwright show-report"
   },
   "devDependencies": {
     "@playwright/test": "^1.48.2",
     "@types/node": "^20.14.0",
+    "@typescript-eslint/eslint-plugin": "^7.18.0",
+    "@typescript-eslint/parser": "^7.18.0",
     "dotenv": "^16.4.5",
+    "eslint": "^8.57.0",
+    "eslint-plugin-playwright": "^1.6.2",
     "typescript": "^5.5.2"
   }
 }
